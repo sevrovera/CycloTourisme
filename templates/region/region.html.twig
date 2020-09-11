@@ -10,15 +10,18 @@
 
 <div class="example-wrapper">
     <h1>Régions à découvrir</h1>
+    <div>
+        <a href="{{ path('add_region') }}"><button type="button" class="btn btn-outline-primary">Ajouter une région</button></a>
+    </div>
+    <br>
 
     {% for region in regions %}
-        <div> {{ region.name }} </div>
-        <a href="{{ path('parcours_region', {'id': region.id}) }}">See parcours</a>
+        <div class="mb-3"> 
+            <div> {{ region.name }} </div>
+            <a href="{{ path('parcours_region', {'id': region.id}) }}">See parcours</a>
+        </div>
     {% endfor %}
-    <br>
-    <div>
-        <a href="{{ path('add_region') }}">Ajouter une région</a>
-    </div>
+    
 
 </div>
 {% endblock %}
