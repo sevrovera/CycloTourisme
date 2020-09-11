@@ -31,6 +31,18 @@ class ParcoursController extends AbstractController
     }
 
     /**
+     * @Route("/region/{id}", name="parcours_region")
+     */
+    public function parcoursRegion(ParcoursRepository $repoP, RegionRepository $repoR, $id)
+    {
+        $region=$repoR->find($id);
+        $parcoursList = $region->getParcours();
+        return $this->render('parcours/parcours.html.twig', [
+            'parcoursList'=>$parcoursList
+        ]);
+    }
+
+    /**
      * @Route("parcours/create/admin", name="app_create_parcours", methods={"get", "post"})
      */
     public function createParcours(Request $request, EntityManagerInterface $em, RegionRepository $repo) : Response {
