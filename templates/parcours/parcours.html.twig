@@ -21,7 +21,7 @@
     <table>
         <tr>
             <th> Intitulé </th>
-            <th> Durée (jours)</th>
+            <th> Durée </th>
             <th> Région </th>
             <th> Description </th>
             <th> Coût </th>
@@ -29,8 +29,10 @@
         {% for parcours in parcoursList %} 
         <tr>
             <td>{{ parcours.name }}</td>
-            <td>{{ parcours.duration }}</td>
+            <td>{{ parcours.duration }} jours</td>
             <td>{{ parcours.region.name }}</td>
+            <td>{{ parcours.description }}</td>
+            <td>{{ parcours.cost }} € </td>
         <tr>
         {% endfor %}
     </table>
