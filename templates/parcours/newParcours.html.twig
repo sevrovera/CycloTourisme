@@ -35,7 +35,7 @@
         </div>
         <div class="formfield">
             <label for='region'>Region :</label>
-            <select id='region' name='region'>
+            <select id='region' name='region' required>
                 {% for r in regions %}
                 <option value={{ r.id }}>{{ r.name }}</option>
                 {% endfor %}
