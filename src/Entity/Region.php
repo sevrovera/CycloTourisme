@@ -59,7 +59,7 @@ class Region
         return $this->parcours;
     }
 
-    public function addParcour(Parcours $parcour): self
+    public function addParcours(Parcours $parcour): self
     {
         if (!$this->parcours->contains($parcour)) {
             $this->parcours[] = $parcour;
@@ -69,7 +69,7 @@ class Region
         return $this;
     }
 
-    public function removeParcour(Parcours $parcour): self
+    public function removeParcours(Parcours $parcour): self
     {
         if ($this->parcours->contains($parcour)) {
             $this->parcours->removeElement($parcour);
