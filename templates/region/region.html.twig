@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Available Regions{% endblock %}
+{% block title %}Régions à Découvrir{% endblock %}
 
 {% block body %}
 <style>
@@ -9,14 +9,14 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Available regions</h1>
+    <h1>Régions à découvrir</h1>
 
     {% for region in regions %}
         <div> {{ region.name }} </div>
     {% endfor %}
     <br>
     <div>
-        <a href="{{ path('add_region') }}">Add a region</a>
+        <a href="{{ path('add_region') }}">Ajouter une région</a>
     </div>
 
 </div>

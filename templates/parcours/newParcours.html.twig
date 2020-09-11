@@ -1,21 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }}: Add a Parcours {% endblock %}
+{% block title %} {{ parent() }}: Ajouter un Parcours {% endblock %}
 
 {% block body %}
-    <h1 class="text-center"> Add a Parcours </h1>
+    <h1 class="text-center"> Ajouter un Parcours </h1>
     <form method="post" class="col-6 offset-3">
         <div class="form-group">
-            <label for='name'>Name : </label>
+            <label for='name'>Intitulé : </label>
             <input type='text' id='name' name='name' class="form-control" required autofocus/>
-            <label for='duration'>Duration :</label>
-            <input type='text' id='duration' name='duration' class="form-control" required autofocus/>
-            <label for='region'>Region :</label>
+            <label for='duration'>Durée :</label>
+            <input type='text' id='duration' name='duration' class="form-control" placeholder='Durée en jours' required autofocus/>
+            <label for='region'>Région :</label>
             <select id='region' name='region' class="form-control" required>
                 {% for r in regions %}
                 <option value={{ r.id }}>{{ r.name }}</option>
                 {% endfor %}
             </select>
+            <label for='cost'>Description :</label>
+            <textarea id="description" name="description" rows="4" cols="30" class="form-control"></textarea>
+            <label for='cost'>Coût :</label>
+            <input type='text' id='cost' name='cost' placeholder='prix en €' class="form-control" required autofocus/>
             <button type="submit" class="btn btn-success w-25 mt-5">OK</button>
         </div>
     </form>

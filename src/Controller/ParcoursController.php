@@ -31,7 +31,7 @@ class ParcoursController extends AbstractController
     }
 
     /**
-     * @Route("parcours/create", name="app_create_parcours", methods={"get", "post"})
+     * @Route("parcours/create/admin", name="app_create_parcours", methods={"get", "post"})
      */
     public function createParcours(Request $request, EntityManagerInterface $em, RegionRepository $repo) : Response {
 
@@ -42,6 +42,12 @@ class ParcoursController extends AbstractController
             $parcours->setName($data['name']);
             $parcours->setDuration($data['duration']);
             $parcours->setRegion($region);
+            if (!empty($_POST["description"])) {
+                $parcours->setDescription($data['description']);    
+            }
+            if (!empty($_POST["cost"])) {
+                $parcours->setCost($data['cost']);    
+            }
             $em->persist($parcours);
             $em->flush();
 
