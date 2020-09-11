@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        form.addParcours {
+            display: table;
+        }
+
+        div.formfield {
+            display: table-row;
+        }
+
+        label, input {
+            display: table-cell;
+            margin-bottom: 10px;
+        }
+
+        label {
+            padding-right: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block title %} Add a Parcours {% endblock %}
+
+{% block body %}
+    <h1> Add a Parcours </h1>
+    <form method="post" class="addParcours">
+        <div class="formfield">
+            <label for='name'>Name : </label>
+            <input type='text' id='name' name='name' required autofocus/>
+        </div>
+        <div class="formfield">
+            <label for='duration'>Duration :</label>
+            <input type='text' id='duration' name='duration' required autofocus/>
+        </div>
+        <div class="formfield">
+            <label for='region'>Region :</label>
+            <input type='text' id='region' name='region'  />
+        </div>
+
+        <button type='submit'>OK</button>
+    </form>
+    
+{% endblock %}
