@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ParcoursController!{% endblock %}
+{% block title %} {{ parent() }}: Parcours {% endblock %}
 
 {% block body %}
 <style>
@@ -10,14 +10,15 @@
 
 <div class="example-wrapper">
     <h1>Liste des parcours</h1>
+    <div>
+        <a href="{{ path('app_create_parcours') }}"><button type="button" class="btn btn-outline-primary">Add parcours</button></a>
+    </div>
 
+    <br>
     {% for parcours in parcoursList %}
         <div> {{ parcours.name }} -- {{ parcours.duration }} -- {{ parcours.region.name }}</div>
     {% endfor %}
     <br>
-    <div>
-        <a href="{{ path('app_create_parcours') }}">Add parcours</a>
-    </div>
 
 </div>
 {% endblock %}

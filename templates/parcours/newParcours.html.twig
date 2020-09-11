@@ -1,49 +1,23 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}
-    <style>
-        form.addParcours {
-            display: table;
-        }
 
-        div.formfield {
-            display: table-row;
-        }
-
-        label, input {
-            display: table-cell;
-            margin-bottom: 10px;
-        }
-
-        label {
-            padding-right: 10px;
-        }
-    </style>
-{% endblock %}
-
-{% block title %} Add a Parcours {% endblock %}
+{% block title %} {{ parent() }}: Add a Parcours {% endblock %}
 
 {% block body %}
-    <h1> Add a Parcours </h1>
-    <form method="post" class="addParcours">
-        <div class="formfield">
+    <h1 class="text-center"> Add a Parcours </h1>
+    <form method="post" class="col-6 offset-3">
+        <div class="form-group">
             <label for='name'>Name : </label>
-            <input type='text' id='name' name='name' required autofocus/>
-        </div>
-        <div class="formfield">
+            <input type='text' id='name' name='name' class="form-control" required autofocus/>
             <label for='duration'>Duration :</label>
-            <input type='text' id='duration' name='duration' required autofocus/>
-        </div>
-        <div class="formfield">
+            <input type='text' id='duration' name='duration' class="form-control" required autofocus/>
             <label for='region'>Region :</label>
-            <select id='region' name='region' required>
+            <select id='region' name='region' class="form-control" required>
                 {% for r in regions %}
                 <option value={{ r.id }}>{{ r.name }}</option>
                 {% endfor %}
-
             </select>
+            <button type="submit" class="btn btn-success w-25 mt-5">OK</button>
         </div>
-
-        <button type='submit'>OK</button>
     </form>
     
 {% endblock %}
