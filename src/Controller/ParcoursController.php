@@ -11,13 +11,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Parcours;
+use App\Entity\Region;
 use App\Repository\ParcoursRepository;
+use App\Repository\RegionRepository;
+
 
 
 class ParcoursController extends AbstractController
 {
     /**
-     * @Route("/", name="parcours")
+     * @Route("/parcours", name="parcours")
      */
     public function index(ParcoursRepository $repo)
     {
@@ -30,22 +33,33 @@ class ParcoursController extends AbstractController
     /**
      * @Route("parcours/create", name="app_create_parcours", methods={"get", "post"})
      */
-    public function createParcours(Request $request, EntityManagerInterface $em) : Response {
+    public function createParcours(Request $request, EntityManagerInterface $em, RegionRepository $repo) : Response {
 
         if ($request->isMethod("POST")){
             $data=$request->request->all();
+            $region=$repo->find($data['region']);
             $parcours = new Parcours();
             $parcours->setName($data['name']);
             $parcours->setDuration($data['duration']);
-            // $parcours->setRegion($data['region']);
-
+            $parcours->setRegion($region);
             $em->persist($parcours);
             $em->flush();
 
             return $this->redirectToRoute('parcours');
         }
 
-        return $this->render("parcours/newParcours.html.twig");
+        $regions=$repo->findAll();
+        return $this->render("parcours/newParcours.html.twig", [
+            'regions'=>$regions
+        ]);
 
+    }
+
+    /**
+     * @Route("/", name="home")
+     */
+    public function home()
+    {
+        return $this->redirectToRoute('parcours');
     }
 }

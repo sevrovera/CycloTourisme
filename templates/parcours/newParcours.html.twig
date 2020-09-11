@@ -35,7 +35,12 @@
         </div>
         <div class="formfield">
             <label for='region'>Region :</label>
-            <input type='text' id='region' name='region'  />
+            <select id='region' name='region'>
+                {% for r in regions %}
+                <option value={{ r.id }}>{{ r.name }}</option>
+                {% endfor %}
+
+            </select>
         </div>
 
         <button type='submit'>OK</button>

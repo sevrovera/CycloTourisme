@@ -12,7 +12,7 @@
     <h1>Liste des parcours</h1>
 
     {% for parcours in parcoursList %}
-        <div> {{ parcours.name }} -- {{ parcours.duration }} -- {{ parcours.region }}</div>
+        <div> {{ parcours.name }} -- {{ parcours.duration }} -- {{ parcours.region.name }}</div>
     {% endfor %}
     <br>
     <div>
