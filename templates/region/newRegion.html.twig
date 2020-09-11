@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        form.addRegion {
+            display: table;
+        }
+
+        div.formfield {
+            display: table-row;
+        }
+
+        label, input {
+            display: table-cell;
+            margin-bottom: 10px;
+        }
+
+        label {
+            padding-right: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block title %} Add a Region {% endblock %}
+
+{% block body %}
+    <h1> Add a Region </h1>
+    <form method="post" class="addMovie">
+        <div class="formfield">
+            <label for='name'>Name : </label>
+            <input type='text' id='name' name='name' required autofocus/>
+        </div>
+        <button type='submit'>OK</button>
+    </form>
+    
+{% endblock %}
