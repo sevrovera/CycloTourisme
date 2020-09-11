@@ -27,7 +27,7 @@ class RegionController extends AbstractController
     }
 
     /**
-     * @Route("/create/region", name="add_region", methods={"get", "post"})
+     * @Route("/create/region/admin", name="add_region", methods={"get", "post"})
      */
     public function createRegion(Request $request, EntityManagerInterface $em) : Response {
 
