@@ -42,6 +42,26 @@ class Parcours
      */
     private $cost;
 
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $difficulty;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $maxParticipants;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $registeredParticipants;
+
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $cover;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +123,54 @@ class Parcours
     public function setCost(?float $cost): self
     {
         $this->cost = $cost;
+
+        return $this;
+    }
+
+    public function getDifficulty(): ?string
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty(?string $difficulty): self
+    {
+        $this->difficulty = $difficulty;
+
+        return $this;
+    }
+
+    public function getMaxParticipants(): ?int
+    {
+        return $this->maxParticipants;
+    }
+
+    public function setMaxParticipants(?int $maxParticipants): self
+    {
+        $this->maxParticipants = $maxParticipants;
+
+        return $this;
+    }
+
+    public function getRegisteredParticipants(): ?int
+    {
+        return $this->registeredParticipants;
+    }
+
+    public function setRegisteredParticipants(?int $registeredParticipants): self
+    {
+        $this->registeredParticipants = $registeredParticipants;
+
+        return $this;
+    }
+
+    public function getCover()
+    {
+        return $this->cover;
+    }
+
+    public function setCover($cover): self
+    {
+        $this->cover = $cover;
 
         return $this;
     }

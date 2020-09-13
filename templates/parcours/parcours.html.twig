@@ -1,38 +1,64 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }}: Liste des Parcours {% endblock %}
+{% block title %} {{ parent() }}: Les Parcours {% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    th, td {
-        padding : 15px;
+    .wrapper {
+        margin: 20px;
+        /*max-width: 800px;*/
+        width: 100%;
+        font: 18px/1.5 sans-serif;
     }
+
+    .wrapper code {
+        background: #F5F5F5;
+        /*padding: 2px 6px;*/
+    }
+
+    th, td {
+        min-width: 120px;
+        padding : 20px;
+    }
+
+    .long-col {
+        min-width: 300px;
+    }
+
+
 </style>
 
-<div class="example-wrapper">
-    <h1>Liste des parcours</h1>
+<div class="wrapper">
+    {% if previousRoute == "parcours_region" %}
+        <h1>Parcours disponibles en {{ region }} </h1>
+    {% else %}
+        <h1>Parcours disponibles</h1>
+    {% endif %}
+
     <div>
-        <a href="{{ path('app_create_parcours') }}"><button type="button" class="btn btn-outline-primary">Ajouter un parcours</button></a>
+        <a href="{{ path('add_parcours') }}"><button type="button" class="btn btn-outline-primary">Ajouter un parcours</button></a>
     </div>
 
     <br>
     <table>
         <tr>
-            <th> Intitulé </th>
+            <th class="long-col"> Intitulé </th>
+            <th class="long-col"> Région </th>
             <th> Durée </th>
-            <th> Région </th>
-            <th> Description </th>
+            <th> Difficulté </th>
             <th> Coût </th>
+            <th> Nb places </th>
+            <th> Nb inscrits </th>
         <tr>
         {% for parcours in parcoursList %} 
         <tr>
-            <td>{{ parcours.name }}</td>
+            <td class="long-col">{{ parcours.name }}</td>
+            <td class="long-col">{{ parcours.region.name }}</td>
             <td>{{ parcours.duration }} jours</td>
-            <td>{{ parcours.region.name }}</td>
-            <td>{{ parcours.description }}</td>
+            <td>{{ parcours.difficulty }} </td>
             <td>{{ parcours.cost }} € </td>
+            <td>{{ parcours.maxParticipants }} </td>
+            <td>{{ parcours.registeredParticipants }} </td>
         <tr>
         {% endfor %}
     </table>

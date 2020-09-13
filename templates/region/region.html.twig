@@ -17,8 +17,7 @@
 
     {% for region in regions %}
         <div class="mb-3"> 
-            <div> {{ region.name }} </div>
-            <a href="{{ path('parcours_region', {'id': region.id}) }}">See parcours</a>
+            <a href="{{ path('parcours_region', {'id': region.id}) }}">{{ region.name }}</a>
         </div>
     {% endfor %}
     

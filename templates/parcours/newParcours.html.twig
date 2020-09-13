@@ -3,23 +3,48 @@
 {% block title %} {{ parent() }}: Ajouter un Parcours {% endblock %}
 
 {% block body %}
-    <h1 class="text-center"> Ajouter un Parcours </h1>
+
+    <div class="pageTitle">
+        <h1 class="text-center"> Ajouter un Parcours </h1>
+    </div>
+
     <form method="post" class="col-6 offset-3">
         <div class="form-group">
-            <label for='name'>Intitulé : </label>
+            
+            <label for='name'>Intitulé du parcours: </label>
             <input type='text' id='name' name='name' class="form-control" required autofocus/>
-            <label for='duration'>Durée :</label>
-            <input type='text' id='duration' name='duration' class="form-control" placeholder='Durée en jours' required autofocus/>
+            
             <label for='region'>Région :</label>
             <select id='region' name='region' class="form-control" required>
                 {% for r in regions %}
                 <option value={{ r.id }}>{{ r.name }}</option>
                 {% endfor %}
             </select>
+            
             <label for='cost'>Description :</label>
             <textarea id="description" name="description" rows="4" cols="30" class="form-control"></textarea>
+            
+            <label for='duration'>Durée :</label>
+            <input type='text' id='duration' name='duration' class="form-control" placeholder='Durée en jours' required autofocus/>
+
+            <label for='difficulty'>Difficulté :</label>
+            <select id='difficulty' name='difficulty' class="form-control" required>
+                <option value="Très facile">Très facile</option>
+                <option value="Facile">Facile</option>
+                <option value="Moyenne">Moyenne</option>
+                <option value="Difficile">Difficile</option>
+                <option value="Expert">Expert</option>
+            </select>
+
             <label for='cost'>Coût :</label>
             <input type='text' id='cost' name='cost' placeholder='prix en €' class="form-control" required autofocus/>
+
+            <label for='maxParticipants'>Nb max de participants :</label>
+            <input type='text' id='maxParticipants' name='maxParticipants' class="form-control" required autofocus/>
+
+            <label for='registeredParticipants'>Participants inscrits :</label>
+            <input type='text' id='registeredParticipants' name='registeredParticipants' class="form-control" required autofocus/>
+
             <button type="submit" class="btn btn-success w-25 mt-5">OK</button>
         </div>
     </form>
