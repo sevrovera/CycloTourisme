@@ -8,6 +8,9 @@
         <h1 class="text-center"> Ajouter un Parcours </h1>
     </div>
 
+    {{ form(form) }}
+
+    <!--
     <form method="post" class="col-6 offset-3">
         <div class="form-group">
             
@@ -16,9 +19,7 @@
             
             <label for='region'>Région :</label>
             <select id='region' name='region' class="form-control" required>
-                {% for r in regions %}
-                <option value={{ r.id }}>{{ r.name }}</option>
-                {% endfor %}
+
             </select>
             
             <label for='cost'>Description :</label>
@@ -48,5 +49,6 @@
             <button type="submit" class="btn btn-success w-25 mt-5">OK</button>
         </div>
     </form>
+    -->
     
 {% endblock %}

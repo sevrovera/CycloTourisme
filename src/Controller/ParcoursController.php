@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Parcours;
 use App\Entity\Region;
+use App\Form\ParcoursType;
 use App\Repository\ParcoursRepository;
 use App\Repository\RegionRepository;
 
@@ -60,6 +61,15 @@ class ParcoursController extends AbstractController
      */
     public function createParcours(Request $request, EntityManagerInterface $em, RegionRepository $repo) : Response {
 
+        $parcours = new Parcours();
+
+        $form = $this->createForm(ParcoursType::class, $parcours);
+
+        return $this->render('parcours/newParcours.html.twig', [
+            'form' => $form->createView()
+        ]);
+
+        /*
         if ($request->isMethod("POST")){
             $data=$request->request->all();
             $region=$repo->find($data['region']);
@@ -94,7 +104,7 @@ class ParcoursController extends AbstractController
         return $this->render("parcours/newParcours.html.twig", [
             'regions'=>$regions
         ]);
-
+        */
     }
 
     /**

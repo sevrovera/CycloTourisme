@@ -62,6 +62,11 @@ class Parcours
      */
     private $cover;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $coverPicture;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -171,6 +176,18 @@ class Parcours
     public function setCover($cover): self
     {
         $this->cover = $cover;
+
+        return $this;
+    }
+
+    public function getCoverPicture(): ?string
+    {
+        return $this->coverPicture;
+    }
+
+    public function setCoverPicture(?string $coverPicture): self
+    {
+        $this->coverPicture = $coverPicture;
 
         return $this;
     }
