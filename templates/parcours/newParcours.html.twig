@@ -8,7 +8,11 @@
         <h1 class="text-center"> Ajouter un Parcours </h1>
     </div>
 
-    {{ form(form) }}
+    {{ form_start(form) }}
+
+        {{ form_row(form.coverPicture) }}
+    
+    {{ form_end(form) }}
 
     <!--
     <form method="post" class="col-6 offset-3">

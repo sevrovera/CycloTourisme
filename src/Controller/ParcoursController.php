@@ -7,6 +7,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -57,54 +61,76 @@ class ParcoursController extends AbstractController
     }
 
     /**
+     * @Route("/parcours/{id}", name="detail_parcours")
+     */
+    public function showDetails(Request $request, ParcoursRepository $repoP, RegionRepository $repoR, $id)
+    {
+        $parcours=$repoP->find($id);
+        return $this->render('parcours/detailParcours.html.twig', [
+            'parcours'=>$parcours,
+        ]);
+    }
+
+    /**
      * @Route("parcours/create/admin", name="add_parcours", methods={"get", "post"})
      */
-    public function createParcours(Request $request, EntityManagerInterface $em, RegionRepository $repo) : Response {
+    public function createParcours(Request $request, SluggerInterface $slugger) : Response {
 
         $parcours = new Parcours();
-
         $form = $this->createForm(ParcoursType::class, $parcours);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var UploadedFile $coverPicture */
+            $coverPicture = $form->get('coverPicture')->getData();
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            /*
+            if ($coverPicture) {
+                $originalFilename = pathinfo($coverPicture->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$coverPicture->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $coverPicture->move(
+                        $this->getParameter('photobank_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $parcours->setCoverPicture($newFilename);
+            }
+            */
+            $coverPictureFile = $form->get('coverPicture')->getData();
+            if ($coverPictureFile) {
+                $coverPictureFileName = $fileUploader->upload($coverPictureFile);
+                $parcours->setBrochureFilename($coverPictureFileName);
+            }
+        
+            // Updates new entity with data from form
+            $parcours = $form->getData();
+
+            // Saves new entity in db
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($parcours);
+            $entityManager->flush();
+
+            // Redirects to list of biketours
+            return $this->redirectToRoute('parcours');
+        }
 
         return $this->render('parcours/newParcours.html.twig', [
             'form' => $form->createView()
         ]);
 
-        /*
-        if ($request->isMethod("POST")){
-            $data=$request->request->all();
-            $region=$repo->find($data['region']);
-            $parcours = new Parcours();
-            $parcours->setName($data['name']);
-            $parcours->setRegion($region);
-            if (!empty($_POST["description"])) {
-                $parcours->setDescription($data['description']);    
-            }
-            if (!empty($_POST["duration"])) {
-                $parcours->setDuration($data['duration']);    
-            }
-            if (!empty($_POST["difficulty"])) {
-                $parcours->setDifficulty($data['difficulty']);    
-            }
-            if (!empty($_POST["cost"])) {
-                $parcours->setCost($data['cost']);    
-            }
-            if (!empty($_POST["maxParticipants"])) {
-                $parcours->setMaxPArticipants($data['maxParticipants']);    
-            }
-            if (!empty($_POST["registeredParticipants"])) {
-                $parcours->setRegisteredParticipants($data['registeredParticipants']);    
-            }
-            $em->persist($parcours);
-            $em->flush();
-
-            return $this->redirectToRoute('parcours');
-        }
-
-        $regions=$repo->findAll();
-        return $this->render("parcours/newParcours.html.twig", [
-            'regions'=>$regions
-        ]);
-        */
     }
 
     /**

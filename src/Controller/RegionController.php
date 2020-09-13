@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Region;
+use App\Form\RegionType;
 use App\Repository\RegionRepository;
 
 
@@ -29,22 +30,30 @@ class RegionController extends AbstractController
     /**
      * @Route("/create/region/admin", name="add_region", methods={"get", "post"})
      */
-    public function createRegion(Request $request, EntityManagerInterface $em) : Response {
+    public function createRegion(Request $request) : Response {
 
-        if ($request->isMethod("POST")){
-            $data=$request->request->all();
-            $region = new Region();
-            $region->setName($data['name']);
+        //$data=$request->request->all();
+        $region = new Region();
+        $form = $this->createForm(RegionType::class, $region);
+        $form->handleRequest($request);
 
-            // insertion de la nouvelle région en db avec Doctrine
-            $em->persist($region);
-            // équivalent d'un commit (peut se faire après plusieurs actions de persistance)
-            $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+        
+            // Updates new entity with data from form
+            $region = $form->getData();
 
+            // Saves new entity in db
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($region);
+            $entityManager->flush();
+
+            // Redirects to list of regions
             return $this->redirectToRoute('regions');
         }
 
-        return $this->render("region/newRegion.html.twig");
+        return $this->render('region/newRegion.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
 }

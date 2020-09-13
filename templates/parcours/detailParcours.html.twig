@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }}: Les Parcours {% endblock %}
+{% block title %} {{ parent() }}: Détail du parcours {% endblock %}
 
 {% block body %}
 <style>
@@ -29,38 +29,31 @@
 </style>
 
 <div class="wrapper">
-    {% if previousRoute == "parcours_region" %}
-        <h1>Parcours disponibles en {{ region }} </h1>
-    {% else %}
-        <h1>Parcours disponibles</h1>
-    {% endif %}
 
-    <div>
-        <a href="{{ path('add_parcours') }}"><button type="button" class="btn btn-outline-primary">Ajouter un parcours</button></a>
-    </div>
+    <h1> {{ parcours.name }} </h1>
 
     <br>
     <table>
         <tr>
-            <th class="long-col"> Intitulé </th>
             <th class="long-col"> Région </th>
+            <th class="long-col"> Description </th>
+            <th> Photo </th>
             <th> Durée </th>
             <th> Difficulté </th>
             <th> Coût </th>
             <th> Nb places </th>
             <th> Nb inscrits </th>
         <tr>
-        {% for parcours in parcoursList %} 
         <tr>
-            <td class="long-col"><a href="{{ path('detail_parcours', {'id': parcours.id}) }}">{{ parcours.name }}</a></td>
             <td class="long-col">{{ parcours.region.name }}</td>
+            <td class="long-col">{{ parcours.description }}</td>
+            <td>{{ parcours.coverPicture }}</td>
             <td>{{ parcours.duration }} jours</td>
             <td>{{ parcours.difficulty }} </td>
             <td>{{ parcours.cost }} € </td>
             <td>{{ parcours.maxParticipants }} </td>
             <td>{{ parcours.registeredParticipants }} </td>
         <tr>
-        {% endfor %}
     </table>
     <br>
 
