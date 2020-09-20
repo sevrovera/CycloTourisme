@@ -20,6 +20,7 @@ use App\Form\ParcoursType;
 use App\Repository\ParcoursRepository;
 use App\Repository\RegionRepository;
 
+use App\Service\FileUploader;
 
 
 class ParcoursController extends AbstractController
@@ -63,18 +64,20 @@ class ParcoursController extends AbstractController
     /**
      * @Route("/parcours/{id}", name="detail_parcours")
      */
-    public function showDetails(Request $request, ParcoursRepository $repoP, RegionRepository $repoR, $id)
+    public function showDetails(Request $request, ParcoursRepository $repoP, $id)
     {
         $parcours=$repoP->find($id);
+        $coverPicturePath= 'photobank/' . $parcours->getCoverPicture();
         return $this->render('parcours/detailParcours.html.twig', [
             'parcours'=>$parcours,
+            'coverPicturePath'=>$coverPicturePath,
         ]);
     }
 
     /**
      * @Route("parcours/create/admin", name="add_parcours", methods={"get", "post"})
      */
-    public function createParcours(Request $request, SluggerInterface $slugger) : Response {
+    public function createParcours(Request $request, FileUploader $fileUploader){
 
         $parcours = new Parcours();
         $form = $this->createForm(ParcoursType::class, $parcours);
@@ -85,34 +88,49 @@ class ParcoursController extends AbstractController
             /** @var UploadedFile $coverPicture */
             $coverPicture = $form->get('coverPicture')->getData();
 
-            // this condition is needed because the 'brochure' field is not required
-            // so the PDF file must be processed only when a file is uploaded
-            /*
-            if ($coverPicture) {
-                $originalFilename = pathinfo($coverPicture->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$coverPicture->guessExtension();
-
-                // Move the file to the directory where brochures are stored
-                try {
-                    $coverPicture->move(
-                        $this->getParameter('photobank_directory'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
-                $parcours->setCoverPicture($newFilename);
-            }
-            */
             $coverPictureFile = $form->get('coverPicture')->getData();
             if ($coverPictureFile) {
                 $coverPictureFileName = $fileUploader->upload($coverPictureFile);
-                $parcours->setBrochureFilename($coverPictureFileName);
+                $parcours->setCoverPicture($coverPictureFileName);
+            }
+        
+            // Updates new entity with data from form
+            $parcours = $form->getData();
+
+            // Saves new entity in db
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($parcours);
+            $entityManager->flush();
+
+            // Redirects to list of biketours
+            return $this->redirectToRoute('parcours');
+        }
+
+        return $this->render('parcours/newParcours.html.twig', [
+            'form' => $form->createView()
+        ]);
+
+    }
+
+    /**
+     * @Route("parcours/update/{id}/admin", name="update_parcours", methods={"get", "post", "put"})
+     */
+    public function updateParcours(Parcours $parcours, Request $request, FileUploader $fileUploader, ParcoursRepository $repoP, $id){
+
+        // pre-populate the form with the data from the biketour
+        $parcours=$repoP->find($id);
+        $form = $this->createForm(ParcoursType::class, $parcours);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var UploadedFile $coverPicture */
+            $coverPicture = $form->get('coverPicture')->getData();
+
+            $coverPictureFile = $form->get('coverPicture')->getData();
+            if ($coverPictureFile) {
+                $coverPictureFileName = $fileUploader->upload($coverPictureFile);
+                $parcours->setCoverPicture($coverPictureFileName);
             }
         
             // Updates new entity with data from form

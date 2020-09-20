@@ -6,14 +6,12 @@
 <style>
     .wrapper {
         margin: 20px;
-        /*max-width: 800px;*/
         width: 100%;
         font: 18px/1.5 sans-serif;
     }
 
     .wrapper code {
         background: #F5F5F5;
-        /*padding: 2px 6px;*/
     }
 
     th, td {
@@ -24,8 +22,6 @@
     .long-col {
         min-width: 300px;
     }
-
-
 </style>
 
 <div class="wrapper">
@@ -33,28 +29,27 @@
     <h1> {{ parcours.name }} </h1>
 
     <br>
-    <table>
-        <tr>
-            <th class="long-col"> Région </th>
-            <th class="long-col"> Description </th>
-            <th> Photo </th>
-            <th> Durée </th>
-            <th> Difficulté </th>
-            <th> Coût </th>
-            <th> Nb places </th>
-            <th> Nb inscrits </th>
-        <tr>
-        <tr>
-            <td class="long-col">{{ parcours.region.name }}</td>
-            <td class="long-col">{{ parcours.description }}</td>
-            <td>{{ parcours.coverPicture }}</td>
-            <td>{{ parcours.duration }} jours</td>
-            <td>{{ parcours.difficulty }} </td>
-            <td>{{ parcours.cost }} € </td>
-            <td>{{ parcours.maxParticipants }} </td>
-            <td>{{ parcours.registeredParticipants }} </td>
-        <tr>
-    </table>
+    <div>
+        <div>
+            <h2> Direction {{ parcours.region.name }} </h2>
+        </div>
+        <div>
+            <p> {{ parcours.description }} </p>
+        </div>
+        <div>
+            <img src= "{{ asset( coverPicturePath )|imagine_filter('small') }}" alt="Cover Picture"/>
+        <div>
+        <div>
+            <h3> Infos pratiques </h3>
+            <ul>
+                <li> Durée : {{ parcours.duration }} jours </li>
+                <li> Difficulté : {{ parcours.difficulty }} </li>
+                <li> Prix : {{ parcours.cost }} € </li>
+                <li> Nb de places : {{ parcours.maxParticipants }}</li>
+                <li> Nb d'inscrits : {{ parcours.registeredParticipants }} / {{ parcours.maxParticipants }} </li>
+            </ul>
+        </div>
+    </div>
     <br>
 
 </div>
