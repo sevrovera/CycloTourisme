@@ -57,7 +57,7 @@ class RegionController extends AbstractController
     }
 
     /**
-     * @Route("/update/region/{id]/admin", name="update_region", methods={"get", "post", "put"})
+     * @Route("/update/region/{id}/admin", name="update_region", methods={"get", "post", "put"})
      */
     public function updateRegion(Region $region, Request $request, RegionRepository $repoR, $id){
 
@@ -82,6 +82,22 @@ class RegionController extends AbstractController
         return $this->render('region/newRegion.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/delete/region/{id}/admin", name="delete_region", methods={"get", "delete"})
+     */
+    public function deleteRegion(Request $request, RegionRepository $repoR, $id){
+
+        $region =$repoR->find($id);
+        
+        // Saves new entity in db
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($region);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('regions');
+
     }
 
 }

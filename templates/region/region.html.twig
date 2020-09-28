@@ -33,7 +33,7 @@
                     <a href="{{ path('update_region', { 'id': region.id }) }}"><button type="button" class="btn btn-outline-warning">Modifier</button></a>
                 </td>
                 <td>
-                    <a href="{{ path('update_region', { 'id': region.id }) }}"><button type="button" class="btn btn-outline-danger">Supprimer</button></a>
+                    <a href="{{ path('delete_region', { 'id': region.id }) }}"><button type="button" class="btn btn-outline-danger">Supprimer</button></a>
                 </td>
             <tr>
             {% endfor %}

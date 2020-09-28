@@ -1,29 +1,13 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}
-    <style>
-        form.addRegion {
-            display: table;
-        }
-
-        div.formfield {
-            display: table-row;
-        }
-
-        label, input {
-            display: table-cell;
-            margin-bottom: 10px;
-        }
-
-        label {
-            padding-right: 10px;
-        }
-    </style>
-{% endblock %}
 
 {% block title %} Ajouter une région {% endblock %}
 
 {% block body %}
-    <h1> Ajouter une région </h1>
+
+    <div class="pageTitle">
+        <h1 class="text-center"> Ajouter une région </h1>
+    </div>
+
     {{ form(form) }}
     <!--
     <form method="post" class="addRegion">

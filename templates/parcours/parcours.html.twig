@@ -63,7 +63,7 @@
                 <a href="{{ path('update_parcours', { 'id': parcours.id }) }}"><button type="button" class="btn btn-outline-warning">Modifier</button></a>
             </td>
             <td>
-                <a href="{{ path('add_parcours', {'id': parcours.id }) }}"><button type="button" class="btn btn-outline-danger">Supprimer</button></a>
+                <a href="{{ path('delete_parcours', {'id': parcours.id }) }}"><button type="button" class="btn btn-outline-danger">Supprimer</button></a>
             </td>
         <tr>
         {% endfor %}

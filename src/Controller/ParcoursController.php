@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
+use Symfony\Component\Form\Form;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,27 +83,34 @@ class ParcoursController extends AbstractController
         $form = $this->createForm(ParcoursType::class, $parcours);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        try {
+            // $this->getDataFromForm($form, $parcours, $request, $fileUploader);
 
-            /** @var UploadedFile $coverPicture */
-            $coverPicture = $form->get('coverPicture')->getData();
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $coverPictureFile = $form->get('coverPicture')->getData();
-            if ($coverPictureFile) {
-                $coverPictureFileName = $fileUploader->upload($coverPictureFile);
-                $parcours->setCoverPicture($coverPictureFileName);
-            }
+                /** @var UploadedFile $coverPicture */
+                $coverPicture = $form->get('coverPicture')->getData();
+    
+                $coverPictureFile = $form->get('coverPicture')->getData();
+                if ($coverPictureFile) {
+                    $coverPictureFileName = $fileUploader->upload($coverPictureFile);
+                    $parcours->setCoverPicture($coverPictureFileName);
+                }
+            
+                // Updates entity with data from form
+                $parcours = $form->getData();
+    
+                // Saves entity in db
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($parcours);
+                $entityManager->flush();
         
-            // Updates new entity with data from form
-            $parcours = $form->getData();
+                // Redirects to list of biketours
+                return $this->redirectToRoute('parcours');
+            }
 
-            // Saves new entity in db
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($parcours);
-            $entityManager->flush();
-
-            // Redirects to list of biketours
-            return $this->redirectToRoute('parcours');
+        } catch(\Exception $e) {
+            error_log($e->getMessage());
         }
 
         return $this->render('parcours/newParcours.html.twig', [
@@ -117,15 +124,56 @@ class ParcoursController extends AbstractController
      */
     public function updateParcours(Parcours $parcours, Request $request, FileUploader $fileUploader, ParcoursRepository $repoP, $id){
 
-        // pre-populate the form with the data from the biketour
+        // pre-populates the form with the data from the biketour
         $parcours=$repoP->find($id);
         $form = $this->createForm(ParcoursType::class, $parcours);
         $form->handleRequest($request);
+        
+        try {
+            // $this->getDataFromForm($form, $parcours, $request, $fileUploader);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            /** @var UploadedFile $coverPicture */
-            $coverPicture = $form->get('coverPicture')->getData();
+                /** @var UploadedFile $coverPicture */
+                $coverPicture = $form->get('coverPicture')->getData();
+    
+                $coverPictureFile = $form->get('coverPicture')->getData();
+                if ($coverPictureFile) {
+                    $coverPictureFileName = $fileUploader->upload($coverPictureFile);
+                    $parcours->setCoverPicture($coverPictureFileName);
+                }
+            
+                // Updates entity with data from form
+                $parcours = $form->getData();
+    
+                // Saves entity in db
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($parcours);
+                $entityManager->flush();
+        
+                // Redirects to list of biketours
+                return $this->redirectToRoute('parcours');
+            }
+
+        } catch(\Exception $e) {
+            error_log($e->getMessage());
+        }
+
+        return $this->render('parcours/newParcours.html.twig', [
+            'form' => $form->createView()
+        ]);
+
+    }
+
+    /**
+     * Retrieves data entered in a creation or update form
+     */
+    // public function getDataFromForm(Form $form, Parcours $parcours, Request $request, FileUploader $fileUploader){
+                
+        // if ($form->isSubmitted() && $form->isValid()) {
+
+            // /** @var UploadedFile $coverPicture */
+            /* $coverPicture = $form->get('coverPicture')->getData();
 
             $coverPictureFile = $form->get('coverPicture')->getData();
             if ($coverPictureFile) {
@@ -133,21 +181,33 @@ class ParcoursController extends AbstractController
                 $parcours->setCoverPicture($coverPictureFileName);
             }
         
-            // Updates new entity with data from form
+            // Updates entity with data from form
             $parcours = $form->getData();
 
-            // Saves new entity in db
+            // Saves entity in db
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($parcours);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Parcours ajouté');
+
             // Redirects to list of biketours
             return $this->redirectToRoute('parcours');
         }
+    }*/
 
-        return $this->render('parcours/newParcours.html.twig', [
-            'form' => $form->createView()
-        ]);
+
+    /**
+     * @Route("/delete/parcours/{id}/admin", name="delete_parcours", methods={"get", "delete"})
+     */
+    public function deleteParcours(Request $request, ParcoursRepository $repoP, $id){
+
+        $parcours =$repoP->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($parcours);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('parcours');
 
     }
 
